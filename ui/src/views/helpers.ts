@@ -1,6 +1,6 @@
-import { notification } from "antd";
 import { MacVersion, RegParamsRevision } from "@chirpstack/chirpstack-api-grpc-web/common/common_pb";
-import { useRef, useEffect } from "react";
+import { notification } from "antd";
+import { useEffect } from "react";
 
 export function formatMacVersion(m: MacVersion) {
   switch (m) {
@@ -17,8 +17,6 @@ export function formatMacVersion(m: MacVersion) {
     case MacVersion.LORAWAN_1_1_0:
       return "LoRaWAN 1.1.0";
   }
-
-  return "";
 }
 
 export function formatRegParamsRevision(r: RegParamsRevision) {
@@ -38,8 +36,6 @@ export function formatRegParamsRevision(r: RegParamsRevision) {
     case RegParamsRevision.RP002_1_0_4:
       return "RP002-1.0.4";
   }
-
-  return "";
 }
 
 export function getEnumName(enums: { [key: number]: string }, index: number) {
@@ -76,14 +72,14 @@ export function useTitle(...v: unknown[]) {
   useEffect(() => {
     if (!documentDefined) return;
 
-    const title = ["ChirpStack LoRaWAN® Network-Server", ...v].reverse().join(" | ");
+    const title = ["CEDIVA LoRaWAN® Network-Server", ...v].reverse().join(" | ");
 
     if (document.title !== title) {
       document.title = title;
     }
 
     return () => {
-      document.title = "ChirpStack LoRaWAN® Network-Server";
+      document.title = "CEDIVA LoRaWAN® Network-Server";
     };
   }, [documentDefined, v]);
 }

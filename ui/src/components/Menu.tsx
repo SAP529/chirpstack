@@ -1,32 +1,32 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import {
+  AppstoreOutlined,
+  CloudOutlined,
+  CompassOutlined,
+  ControlOutlined,
+  DashboardOutlined,
+  HomeOutlined,
+  KeyOutlined,
+  RadarChartOutlined,
+  UserOutlined,
+  WifiOutlined,
+} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu, Typography } from "antd";
-import {
-  CloudOutlined,
-  HomeOutlined,
-  UserOutlined,
-  DashboardOutlined,
-  KeyOutlined,
-  WifiOutlined,
-  ControlOutlined,
-  AppstoreOutlined,
-  CompassOutlined,
-  RadarChartOutlined,
-} from "@ant-design/icons";
 
 import type { GetTenantResponse, ListTenantsResponse } from "@chirpstack/chirpstack-api-grpc-web/api/tenant_pb";
 import { ListTenantsRequest } from "@chirpstack/chirpstack-api-grpc-web/api/tenant_pb";
 
 import type { GetVersionResponse } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
 
+import Admin from "../components/Admin";
 import type { OptionCallbackFunc, OptionsCallbackFunc } from "../components/Autocomplete";
 import Autocomplete from "../components/Autocomplete";
-import Admin from "../components/Admin";
-import TenantStore from "../stores/TenantStore";
-import SessionStore from "../stores/SessionStore";
 import InternalStore from "../stores/InternalStore";
+import SessionStore from "../stores/SessionStore";
+import TenantStore from "../stores/TenantStore";
 
 function SideMenu() {
   const [tenantId, setTenantId] = useState<string>("");
@@ -280,7 +280,7 @@ function SideMenu() {
       />
       <Admin>
         <Typography.Text type="secondary" className="version">
-          Version: v{version}
+          &#169; Cediva LLC / Version: v{version}
         </Typography.Text>
       </Admin>
     </div>

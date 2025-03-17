@@ -14,8 +14,13 @@
 
 .layout-header .logo {
   float: left;
-  margin-top: 16px;
-  height: 32px;
+  height: 59px;
+}
+
+.layout-header .logo-container{
+      display: flex;
+        justify-content: space-between;
+        align-items: center;
 }
 
 .layout-header .actions {
@@ -134,4 +139,9 @@ pre {
 
 .input-code input {
   font-family: monospace !important;
+}
+.login_bg{
+  background: url('/login-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
