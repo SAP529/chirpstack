@@ -2,13 +2,15 @@ name: CI
 on:
   push:
     branches:
-      - '*'
+      - "*"
     tags:
-      - 'v*'
+      - "v*"
   pull_request:
 
 env:
   CARGO_INCREMENTAL: 0
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   tests:
@@ -21,16 +23,13 @@ jobs:
     env:
       DATABASE: ${{ matrix.database }}
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v4
-      - 
-        name: Install Nix
+      - name: Install Nix
         uses: cachix/install-nix-action@v27
         with:
           nix_path: nixpkgs=channel:nixos-24.11
-      -
-        name: Cargo cache
+      - name: Cargo cache
         uses: actions/cache@v4
         with:
           path: |
@@ -40,14 +39,11 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-test-${{ matrix.database }}-${{ hashFiles('**/Cargo.lock') }}
-      -
-        name: Start dependency services
+      - name: Start dependency services
         run: docker compose up -d
-      -
-        name: Build UI
+      - name: Build UI
         run: nix-shell --command "make build-ui"
-      -
-        name: Run tests
+      - name: Run tests
         run: nix-shell --command "make test"
 
   dist:
@@ -62,16 +58,13 @@ jobs:
     env:
       DATABASE: ${{ matrix.database }}
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v4
-      - 
-        name: Install Nix
+      - name: Install Nix
         uses: cachix/install-nix-action@v27
         with:
           nix_path: nixpkgs=channel:nixos-24.11
-      -
-        name: Cargo cache
+      - name: Cargo cache
         uses: actions/cache@v4
         with:
           path: |
@@ -81,54 +74,49 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-dist-${{ hashFiles('**/Cargo.lock') }}
-      -
-        name: Build UI
+      - name: Build UI
         run: nix-shell --command "make build-ui"
-      -
-        name: Install dev dependencies
+      - name: Install dev dependencies
         run: nix-shell --command "make dev-dependencies"
-      -
-        name: Build distributables
+      - name: Build distributables
         run: nix-shell --command "make dist"
-      -
-        name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
-      -
-        name: Upload binaries to S3
-        run: |
-          aws s3 sync dist s3://builds.loraserver.io/chirpstack
-        if: startsWith(github.ref, 'refs/tags/v')
-      -
-        name: Docker meta
+      # - name: Upload binaries to Assets
+        # uses: softprops/action-gh-release@v1
+        # if: startsWith(github.ref, 'refs/tags/v')
+        # with:
+          # files: |
+            # dist/dist
+        # env:
+          # GITHUB_TOKEN: ${{ secrets.CR_PAT }}
+      - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: |
-            chirpstack/${{ github.event.repository.name }}${{ matrix.database != 'postgres' && format('-{0}', matrix.database) || '' }}
+            ${{ env.REGISTRY }}/sap529/${{ github.event.repository.name }}${{ matrix.database != 'postgres' && format('-{0}', matrix.database) || '' }}
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}
             type=semver,pattern={{major}}.{{minor}}
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
         with:
           config: .github/buildkitd.toml
-      -
-        name: Login to DockerHub
-        uses: docker/login-action@v1 
+      # - name: Login to DockerHub
+      #   uses: docker/login-action@v1
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Log in to the Container registry
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.CR_PAT }}
+      - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
@@ -137,6 +125,5 @@ jobs:
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      -
-        name: Image digest
+      - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
