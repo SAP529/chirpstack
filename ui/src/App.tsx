@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import React, { useState } from "react";
 import type { RouterProps } from "react-router-dom";
-import { Router, Routes, Route } from "react-router-dom";
+import { Route, Router, Routes } from "react-router-dom";
 
 import { Layout } from "antd";
 
@@ -14,26 +14,26 @@ import Menu from "./components/Menu";
 import Dashboard from "./views/dashboard/Dashboard";
 
 // users
-import Login from "./views/users/Login";
-import ListUsers from "./views/users/ListUsers";
+import ChangeUserPassword from "./views/users/ChangeUserPassword";
 import CreateUser from "./views/users/CreateUser";
 import EditUser from "./views/users/EditUser";
-import ChangeUserPassword from "./views/users/ChangeUserPassword";
+import ListUsers from "./views/users/ListUsers";
+import Login from "./views/users/Login";
 
 // tenants
-import TenantRedirect from "./views/tenants/TenantRedirect";
-import ListTenants from "./views/tenants/ListTenants";
 import CreateTenant from "./views/tenants/CreateTenant";
+import ListTenants from "./views/tenants/ListTenants";
 import TenantLoader from "./views/tenants/TenantLoader";
+import TenantRedirect from "./views/tenants/TenantRedirect";
 
 // api keys
-import ListAdminApiKeys from "./views/api-keys/ListAdminApiKeys";
 import CreateAdminApiKey from "./views/api-keys/CreateAdminApiKey";
+import ListAdminApiKeys from "./views/api-keys/ListAdminApiKeys";
 
 // device-profile templates
-import ListDeviceProfileTemplates from "./views/device-profile-templates/ListDeviceProfileTemplates";
 import CreateDeviceProfileTemplate from "./views/device-profile-templates/CreateDeviceProfileTemplate";
 import EditDeviceProfileTemplate from "./views/device-profile-templates/EditDeviceProfileTemplate";
+import ListDeviceProfileTemplates from "./views/device-profile-templates/ListDeviceProfileTemplates";
 
 // regions
 import ListRegions from "./views/regions/ListRegions";
@@ -80,10 +80,11 @@ function App() {
               <Header user={user} />
             </Layout.Header>
             <Layout className="layout">
-              <Layout.Sider width="300" theme="light" className="layout-menu">
+              {/* <Layout.Sider theme="light" className="layout-menu">
                 <Menu />
-              </Layout.Sider>
+              </Layout.Sider> */}
               <Layout.Content className="layout-content" style={{ padding: "24px 24px 24px" }}>
+                <Menu />
                 <Routes>
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/tenants" element={<ListTenants />} />
@@ -110,6 +111,7 @@ function App() {
                 </Routes>
               </Layout.Content>
             </Layout>
+            <Layout.Footer className="layout-footer"></Layout.Footer>
           </div>
         )}
       </CustomRouter>

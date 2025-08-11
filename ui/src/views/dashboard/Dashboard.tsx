@@ -1,32 +1,46 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { presetPalettes } from "@ant-design/colors";
-import { Space, Breadcrumb, Card, Row, Col, Empty } from "antd";
 import { PageHeader } from "@ant-design/pro-layout";
+import { Breadcrumb, Card, Col, Empty, Row, Space } from "antd";
 
 import { formatDistanceToNow } from "date-fns";
 import type { LatLngTuple, PointTuple } from "leaflet";
-import { Popup } from "react-leaflet";
 import { Doughnut } from "react-chartjs-2";
+import { Popup } from "react-leaflet";
 
 import type {
-  GetGatewaysSummaryResponse,
   GetDevicesSummaryResponse,
+  GetGatewaysSummaryResponse,
 } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
 import {
-  GetGatewaysSummaryRequest,
   GetDevicesSummaryRequest,
+  GetGatewaysSummaryRequest,
 } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
 
-import type { ListGatewaysResponse, GatewayListItem } from "@chirpstack/chirpstack-api-grpc-web/api/gateway_pb";
-import { ListGatewaysRequest, GatewayState } from "@chirpstack/chirpstack-api-grpc-web/api/gateway_pb";
+import type { GatewayListItem, ListGatewaysResponse } from "@chirpstack/chirpstack-api-grpc-web/api/gateway_pb";
+import { GatewayState, ListGatewaysRequest } from "@chirpstack/chirpstack-api-grpc-web/api/gateway_pb";
 
-import InternalStore from "../../stores/InternalStore";
-import GatewayStore from "../../stores/GatewayStore";
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import type { MarkerColor } from "../../components/Map";
 import Map, { Marker } from "../../components/Map";
+import GatewayStore from "../../stores/GatewayStore";
+import InternalStore from "../../stores/InternalStore";
 import { useTitle } from "../helpers";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.defaults.font.family = "Consolas";
+ChartJS.defaults.plugins.tooltip.titleFont = { weight: "bold", size: 13 };
+ChartJS.defaults.plugins.tooltip.mode = "index";
+ChartJS.defaults.plugins.legend.labels.font = { weight: "bold" };
+ChartJS.defaults.animation = false;
+ChartJS.defaults.plugins.legend.display = false;
+ChartJS.defaults.plugins.legend.position = "bottom";
+ChartJS.defaults.plugins.legend.labels.font = {
+  size: 14,
+  weight: 600,
+};
 
 function GatewaysMap() {
   const [items, setItems] = useState<GatewayListItem[]>([]);
@@ -102,6 +116,7 @@ function DevicesActiveInactive({ summary }: { summary?: GetDevicesSummaryRespons
     labels: ["Never seen", "Inactive", "Active"],
     datasets: [
       {
+        cutout: "75%",
         data: [summary.getNeverSeenCount(), summary.getInactiveCount(), summary.getActiveCount()],
         backgroundColor: [presetPalettes.orange.primary, presetPalettes.red.primary, presetPalettes.green.primary],
       },
@@ -121,6 +136,53 @@ function DevicesActiveInactive({ summary }: { summary?: GetDevicesSummaryRespons
   return (
     <div className="chart-doughnut">
       <Doughnut data={data} options={options} />
+      <div>
+        <div className="chart-legends">
+          <div>
+            <span
+              style={{
+                display: "inline-block",
+                width: "12px",
+                height: "12px",
+                borderRadius: "50%",
+                backgroundColor: "gray",
+                marginRight: "8px",
+              }}></span>
+            <span>Never Seen</span>
+          </div>
+          <strong>{summary.getNeverSeenCount()}</strong>
+        </div>
+        <div className="chart-legends">
+          <div>
+            <span
+              style={{
+                display: "inline-block",
+                width: "12px",
+                height: "12px",
+                borderRadius: "50%",
+                backgroundColor: "red",
+                marginRight: "8px",
+              }}></span>
+            <span>Offline</span>
+          </div>
+          <strong>{summary.getInactiveCount()}</strong>
+        </div>
+        <div className="chart-legends">
+          <div>
+            <span
+              style={{
+                display: "inline-block",
+                width: "12px",
+                height: "12px",
+                borderRadius: "50%",
+                backgroundColor: "green",
+                marginRight: "8px",
+              }}></span>
+            <span>Online</span>
+          </div>
+          <strong>{summary.getActiveCount()}</strong>
+        </div>
+      </div>
     </div>
   );
 }
@@ -137,6 +199,7 @@ function GatewaysActiveInactive({ summary }: { summary?: GetGatewaysSummaryRespo
     labels: ["Never seen", "Offline", "Online"],
     datasets: [
       {
+        cutout: "75%",
         data: [summary.getNeverSeenCount(), summary.getOfflineCount(), summary.getOnlineCount()],
         backgroundColor: [presetPalettes.orange.primary, presetPalettes.red.primary, presetPalettes.green.primary],
       },
@@ -156,6 +219,53 @@ function GatewaysActiveInactive({ summary }: { summary?: GetGatewaysSummaryRespo
   return (
     <div className="chart-doughnut">
       <Doughnut data={data} options={options} />
+      <div>
+        <div className="chart-legends">
+          <div>
+            <span
+              style={{
+                display: "inline-block",
+                width: "12px",
+                height: "12px",
+                borderRadius: "50%",
+                backgroundColor: "gray",
+                marginRight: "8px",
+              }}></span>
+            <span>Never Seen</span>
+          </div>
+          <strong>{summary.getNeverSeenCount()}</strong>
+        </div>
+        <div className="chart-legends">
+          <div>
+            <span
+              style={{
+                display: "inline-block",
+                width: "12px",
+                height: "12px",
+                borderRadius: "50%",
+                backgroundColor: "red",
+                marginRight: "8px",
+              }}></span>
+            <span>Offline</span>
+          </div>
+          <strong>{summary.getOfflineCount()}</strong>
+        </div>
+        <div className="chart-legends">
+          <div>
+            <span
+              style={{
+                display: "inline-block",
+                width: "12px",
+                height: "12px",
+                borderRadius: "50%",
+                backgroundColor: "green",
+                marginRight: "8px",
+              }}></span>
+            <span>Online</span>
+          </div>
+          <strong>{summary.getOnlineCount()}</strong>
+        </div>
+      </div>
     </div>
   );
 }
@@ -188,6 +298,7 @@ function DevicesDataRates({ summary }: { summary?: GetDevicesSummaryResponse }) 
   const data: {
     labels: string[];
     datasets: {
+      cutout: string;
       data: number[];
       backgroundColor: string[];
     }[];
@@ -195,6 +306,7 @@ function DevicesDataRates({ summary }: { summary?: GetDevicesSummaryResponse }) 
     labels: [],
     datasets: [
       {
+        cutout: "75%",
         data: [],
         backgroundColor: [],
       },
@@ -206,7 +318,7 @@ function DevicesDataRates({ summary }: { summary?: GetDevicesSummaryResponse }) 
     data.datasets[0].data.push(elm[1]);
     data.datasets[0].backgroundColor.push(getColor(elm[0]));
   }
-
+  const drMapArray = summary.getDrCountMap().toArray();
   const options: {
     animation: boolean;
     responsive: boolean;
@@ -220,6 +332,28 @@ function DevicesDataRates({ summary }: { summary?: GetDevicesSummaryResponse }) 
   return (
     <div className="chart-doughnut">
       <Doughnut data={data} options={options} />
+      <div>
+        {drMapArray.map((elm, idx) => (
+          <div
+            key={idx}
+            className="chart-legends"
+            style={{ display: "flex", alignItems: "center", marginBottom: "4px" }}>
+            <div>
+              <span
+                style={{
+                  display: "inline-block",
+                  width: "12px",
+                  height: "12px",
+                  borderRadius: "50%",
+                  backgroundColor: getColor(elm[0]),
+                  marginRight: "8px",
+                }}></span>
+              <span>{`DR${elm[0]}`}</span>
+            </div>
+            <strong style={{ marginLeft: "6px" }}>{elm[1]}</strong>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -255,17 +389,17 @@ function Dashboard() {
         title="Dashboard"
       />
       <Row gutter={24}>
-        <Col span={8}>
+        <Col span={8} className="rotiot-card-header">
           <Card title="Active devices">
             <DevicesActiveInactive summary={devicesSummary} />
           </Card>
         </Col>
-        <Col span={8}>
+        <Col span={8} className="rotiot-card-header">
           <Card title="Active gateways">
             <GatewaysActiveInactive summary={gatewaysSummary} />
           </Card>
         </Col>
-        <Col span={8}>
+        <Col span={8} className="rotiot-card-header">
           <Card title="Device data-rate usage">
             <DevicesDataRates summary={devicesSummary} />
           </Card>

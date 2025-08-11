@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { Form, Input, Select, InputNumber, Switch, Row, Col, Button, Tabs, Card } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Form, Input, InputNumber, Row, Select, Switch, Tabs } from "antd";
 
-import { DeviceProfileTemplate } from "@chirpstack/chirpstack-api-grpc-web/api/device_profile_template_pb";
-import { CodecRuntime, Measurement, MeasurementKind } from "@chirpstack/chirpstack-api-grpc-web/api/device_profile_pb";
-import { Region, MacVersion, RegParamsRevision } from "@chirpstack/chirpstack-api-grpc-web/common/common_pb";
 import type { ListDeviceProfileAdrAlgorithmsResponse } from "@chirpstack/chirpstack-api-grpc-web/api/device_profile_pb";
+import { CodecRuntime, Measurement, MeasurementKind } from "@chirpstack/chirpstack-api-grpc-web/api/device_profile_pb";
+import { DeviceProfileTemplate } from "@chirpstack/chirpstack-api-grpc-web/api/device_profile_template_pb";
+import { MacVersion, RegParamsRevision, Region } from "@chirpstack/chirpstack-api-grpc-web/common/common_pb";
 
-import { onFinishFailed } from "../helpers";
-import DeviceProfileStore from "../../stores/DeviceProfileStore";
 import CodeEditor from "../../components/CodeEditor";
+import DeviceProfileStore from "../../stores/DeviceProfileStore";
+import { onFinishFailed } from "../helpers";
 
 interface IProps {
   initialValues: DeviceProfileTemplate;
@@ -123,8 +123,7 @@ function DeviceProfileTemplateForm(props: IProps) {
       initialValues={props.initialValues.toObject()}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      form={form}
-    >
+      form={form}>
       <Tabs>
         <Tabs.TabPane tab="General" key="1">
           <Form.Item
@@ -136,8 +135,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                 pattern: new RegExp(/^[\w-]*$/g),
                 message: "Please enter a valid id!",
               },
-            ]}
-          >
+            ]}>
             <Input disabled={!!props.update} />
           </Form.Item>
           <Form.Item label="Name" name="name" rules={[{ required: true, message: "Please enter a name!" }]}>
@@ -149,8 +147,7 @@ function DeviceProfileTemplateForm(props: IProps) {
           <Form.Item
             label="Firmware version"
             name="firmware"
-            rules={[{ required: true, message: "Please enter a firmware version!" }]}
-          >
+            rules={[{ required: true, message: "Please enter a firmware version!" }]}>
             <Input />
           </Form.Item>
           <Form.Item label="Description" name="description">
@@ -179,8 +176,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                 label="MAC version"
                 tooltip="The LoRaWAN MAC version supported by the device."
                 name="macVersion"
-                rules={[{ required: true, message: "Please select a MAC version!" }]}
-              >
+                rules={[{ required: true, message: "Please select a MAC version!" }]}>
                 <Select>
                   <Select.Option value={MacVersion.LORAWAN_1_0_0}>LoRaWAN 1.0.0</Select.Option>
                   <Select.Option value={MacVersion.LORAWAN_1_0_1}>LoRaWAN 1.0.1</Select.Option>
@@ -201,8 +197,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                     required: true,
                     message: "Please select a regional parameters revision!",
                   },
-                ]}
-              >
+                ]}>
                 <Select>
                   <Select.Option value={RegParamsRevision.A}>A</Select.Option>
                   <Select.Option value={RegParamsRevision.B}>B</Select.Option>
@@ -218,8 +213,7 @@ function DeviceProfileTemplateForm(props: IProps) {
             label="ADR algorithm"
             tooltip="The ADR algorithm that will be used for controlling the device data-rate."
             name="adrAlgorithmId"
-            rules={[{ required: true, message: "Please select an ADR algorithm!" }]}
-          >
+            rules={[{ required: true, message: "Please select an ADR algorithm!" }]}>
             <Select>{adrOptions}</Select>
           </Form.Item>
           <Row gutter={24}>
@@ -228,8 +222,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                 label="Flush queue on activate"
                 name="flushQueueOnActivate"
                 valuePropName="checked"
-                tooltip="If enabled, the device-queue will be flushed on ABP or OTAA activation."
-              >
+                tooltip="If enabled, the device-queue will be flushed on ABP or OTAA activation.">
                 <Switch />
               </Form.Item>
             </Col>
@@ -243,8 +236,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                     required: true,
                     message: "Please enter an uplink interval!",
                   },
-                ]}
-              >
+                ]}>
                 <InputNumber min={0} />
               </Form.Item>
             </Col>
@@ -252,8 +244,7 @@ function DeviceProfileTemplateForm(props: IProps) {
               <Form.Item
                 label="Device-status request frequency (req/day)"
                 tooltip="Frequency to initiate an End-Device status request (request/day). Set to 0 to disable."
-                name="deviceStatusReqInterval"
-              >
+                name="deviceStatusReqInterval">
                 <InputNumber min={0} />
               </Form.Item>
             </Col>
@@ -269,8 +260,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                 <Form.Item
                   label="RX1 delay"
                   name="abpRx1Delay"
-                  rules={[{ required: true, message: "Please enter a RX1 delay!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter a RX1 delay!" }]}>
                   <InputNumber min={0} max={15} />
                 </Form.Item>
               </Col>
@@ -284,8 +274,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                       required: true,
                       message: "Please enter a RX1 data-rate offset!",
                     },
-                  ]}
-                >
+                  ]}>
                   <InputNumber min={0} max={15} />
                 </Form.Item>
               </Col>
@@ -303,8 +292,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                       required: true,
                       message: "Please enter a RX2 data-rate!",
                     },
-                  ]}
-                >
+                  ]}>
                   <InputNumber min={0} max={15} />
                 </Form.Item>
               </Col>
@@ -317,8 +305,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                       required: true,
                       message: "Please enter a RX2 frequency!",
                     },
-                  ]}
-                >
+                  ]}>
                   <InputNumber min={0} style={{ width: "200px" }} />
                 </Form.Item>
               </Col>
@@ -342,8 +329,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                         required: true,
                         message: "Please enter a Class-B confirmed downlink timeout!",
                       },
-                    ]}
-                  >
+                    ]}>
                     <InputNumber min={0} />
                   </Form.Item>
                 </Col>
@@ -357,8 +343,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                         required: true,
                         message: "Please select the ping-slot periodicity!",
                       },
-                    ]}
-                  >
+                    ]}>
                     <Select>
                       <Select.Option value={0}>Every second</Select.Option>
                       <Select.Option value={1}>Every 2 seconds</Select.Option>
@@ -383,8 +368,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                         required: true,
                         message: "Please enter the ping-slot data-rate!",
                       },
-                    ]}
-                  >
+                    ]}>
                     <InputNumber min={0} />
                   </Form.Item>
                 </Col>
@@ -398,8 +382,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                         required: true,
                         message: "Please enter the ping-slot frequency!",
                       },
-                    ]}
-                  >
+                    ]}>
                     <InputNumber min={0} style={{ width: "200px" }} />
                   </Form.Item>
                 </Col>
@@ -421,8 +404,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                   required: true,
                   message: "Please enter a Class-C confirmed downlink timeout!",
                 },
-              ]}
-            >
+              ]}>
               <InputNumber min={0} />
             </Form.Item>
           )}
@@ -431,8 +413,7 @@ function DeviceProfileTemplateForm(props: IProps) {
           <Form.Item
             label="Payload codec"
             name="payloadCodecRuntime"
-            tooltip="By defining a payload codec, ChirpStack Application Server can encode and decode the binary device payload for you."
-          >
+            tooltip="By defining a payload codec, ROTIOT Application Server can encode and decode the binary device payload for you.">
             <Select onChange={onPayloadCodecRuntimeChange}>
               <Select.Option value={CodecRuntime.NONE}>None</Select.Option>
               <Select.Option value={CodecRuntime.CAYENNE_LPP}>Cayenne LPP</Select.Option>
@@ -452,8 +433,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                         {...restField}
                         name={[name, 0]}
                         fieldKey={[name, 0]}
-                        rules={[{ required: true, message: "Please enter a key!" }]}
-                      >
+                        rules={[{ required: true, message: "Please enter a key!" }]}>
                         <Input placeholder="Key" />
                       </Form.Item>
                     </Col>
@@ -462,8 +442,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                         {...restField}
                         name={[name, 1]}
                         fieldKey={[name, 1]}
-                        rules={[{ required: true, message: "Please enter a value!" }]}
-                      >
+                        rules={[{ required: true, message: "Please enter a value!" }]}>
                         <Input placeholder="Value" />
                       </Form.Item>
                     </Col>
@@ -484,7 +463,7 @@ function DeviceProfileTemplateForm(props: IProps) {
         <Tabs.TabPane tab="Measurements" key="7">
           <Card bordered={false}>
             <p>
-              ChirpStack can aggregate and visualize decoded device measurements in the device dashboard. To setup the
+              ROTIOT can aggregate and visualize decoded device measurements in the device dashboard. To setup the
               aggregation of device measurements, you must configure the key, kind of measurement and name
               (user-defined). The following measurement-kinds can be selected:
             </p>
@@ -511,8 +490,7 @@ function DeviceProfileTemplateForm(props: IProps) {
             label="Automatically detect measurement keys"
             name="autoDetectMeasurements"
             valuePropName="checked"
-            tooltip="If enabled, measurement-keys will be automatically added based on the decoded payload keys. If the decoded payload contains random keys, you want to disable auto-detection."
-          >
+            tooltip="If enabled, measurement-keys will be automatically added based on the decoded payload keys. If the decoded payload contains random keys, you want to disable auto-detection.">
             <Switch />
           </Form.Item>
           <Form.List name="measurementsMap">
@@ -525,8 +503,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                         {...restField}
                         name={[name, 0]}
                         fieldKey={[name, 0]}
-                        rules={[{ required: true, message: "Please enter a key!" }]}
-                      >
+                        rules={[{ required: true, message: "Please enter a key!" }]}>
                         <Input placeholder="Key" />
                       </Form.Item>
                     </Col>
@@ -535,8 +512,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                         {...restField}
                         name={[name, 1, "kind"]}
                         fieldKey={[name, 1, "kind"]}
-                        rules={[{ required: true, message: "Please select a kind!" }]}
-                      >
+                        rules={[{ required: true, message: "Please select a kind!" }]}>
                         <Select>
                           <Select.Option value={MeasurementKind.UNKNOWN}>Unknown / unset</Select.Option>
                           <Select.Option value={MeasurementKind.COUNTER}>Counter</Select.Option>
@@ -556,8 +532,7 @@ function DeviceProfileTemplateForm(props: IProps) {
                             required: true,
                             message: "Please enter a description!",
                           },
-                        ]}
-                      >
+                        ]}>
                         <Input placeholder="Name" />
                       </Form.Item>
                     </Col>

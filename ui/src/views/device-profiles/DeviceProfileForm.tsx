@@ -1,40 +1,40 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { Form, Input, Select, InputNumber, Switch, Row, Col, Button, Tabs, Modal, Spin, Cascader, Card } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Card, Cascader, Col, Form, Input, InputNumber, Modal, Row, Select, Spin, Switch, Tabs } from "antd";
 
+import type { ListDeviceProfileAdrAlgorithmsResponse } from "@chirpstack/chirpstack-api-grpc-web/api/device_profile_pb";
 import {
-  DeviceProfile,
   AppLayerParams,
+  CadPeriodicity,
   CodecRuntime,
+  DeviceProfile,
   Measurement,
   MeasurementKind,
-  CadPeriodicity,
-  SecondChAckOffset,
   RelayModeActivation,
+  SecondChAckOffset,
   Ts003Version,
   Ts004Version,
   Ts005Version,
 } from "@chirpstack/chirpstack-api-grpc-web/api/device_profile_pb";
-import { Region, MacVersion, RegParamsRevision } from "@chirpstack/chirpstack-api-grpc-web/common/common_pb";
-import type { ListRegionsResponse, RegionListItem } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
-import type { ListDeviceProfileAdrAlgorithmsResponse } from "@chirpstack/chirpstack-api-grpc-web/api/device_profile_pb";
 import type {
-  ListDeviceProfileTemplatesResponse,
-  GetDeviceProfileTemplateResponse,
-  DeviceProfileTemplateListItem,
   DeviceProfileTemplate,
+  DeviceProfileTemplateListItem,
+  GetDeviceProfileTemplateResponse,
+  ListDeviceProfileTemplatesResponse,
 } from "@chirpstack/chirpstack-api-grpc-web/api/device_profile_template_pb";
 import {
-  ListDeviceProfileTemplatesRequest,
   GetDeviceProfileTemplateRequest,
+  ListDeviceProfileTemplatesRequest,
 } from "@chirpstack/chirpstack-api-grpc-web/api/device_profile_template_pb";
+import type { ListRegionsResponse, RegionListItem } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
+import { MacVersion, RegParamsRevision, Region } from "@chirpstack/chirpstack-api-grpc-web/common/common_pb";
 
-import { getEnumName, onFinishFailed } from "../helpers";
-import InternalStore from "../../stores/InternalStore";
+import CodeEditor from "../../components/CodeEditor";
 import DeviceProfileStore from "../../stores/DeviceProfileStore";
 import DeviceProfileTemplateStore from "../../stores/DeviceProfileTemplateStore";
-import CodeEditor from "../../components/CodeEditor";
+import InternalStore from "../../stores/InternalStore";
+import { getEnumName, onFinishFailed } from "../helpers";
 
 interface ModalProps {
   onOk: (dp: DeviceProfileTemplate) => void;
@@ -154,8 +154,7 @@ function TemplateModal(props: ModalProps) {
       bodyStyle={{ height: 300 }}
       onOk={onOk}
       onCancel={props.onCancel}
-      okButtonProps={{ disabled: !templateId }}
-    >
+      okButtonProps={{ disabled: !templateId }}>
       {!templatesLoaded && (
         <div className="spinner">
           <Spin />
@@ -429,8 +428,7 @@ function DeviceProfileForm(props: IProps) {
       initialValues={props.initialValues.toObject()}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      form={form}
-    >
+      form={form}>
       <TemplateModal visible={templateModalVisible} onOk={onTemplateModalOk} onCancel={onTemplateModalCancel} />
       <Tabs tabBarExtraContent={operations} activeKey={tabActive} onChange={onTabChange}>
         <Tabs.TabPane tab="General" key="1" forceRender>
@@ -452,8 +450,7 @@ function DeviceProfileForm(props: IProps) {
               <Form.Item
                 label="Region configuration"
                 tooltip="By selecting a region configuration, the device will only work within the selected region configuration. If left blank, the device will work under all region configurations of the selected region."
-                name="regionConfigId"
-              >
+                name="regionConfigId">
                 <Select disabled={props.disabled} allowClear>
                   {regionConfigOptions}
                 </Select>
@@ -466,8 +463,7 @@ function DeviceProfileForm(props: IProps) {
                 label="MAC version"
                 tooltip="The LoRaWAN MAC version supported by the device."
                 name="macVersion"
-                rules={[{ required: true, message: "Please select a MAC version!" }]}
-              >
+                rules={[{ required: true, message: "Please select a MAC version!" }]}>
                 <Select disabled={props.disabled}>
                   <Select.Option value={MacVersion.LORAWAN_1_0_0}>LoRaWAN 1.0.0</Select.Option>
                   <Select.Option value={MacVersion.LORAWAN_1_0_1}>LoRaWAN 1.0.1</Select.Option>
@@ -488,8 +484,7 @@ function DeviceProfileForm(props: IProps) {
                     required: true,
                     message: "Please select a regional parameters revision!",
                   },
-                ]}
-              >
+                ]}>
                 <Select disabled={props.disabled}>
                   <Select.Option value={RegParamsRevision.A}>A</Select.Option>
                   <Select.Option value={RegParamsRevision.B}>B</Select.Option>
@@ -506,8 +501,7 @@ function DeviceProfileForm(props: IProps) {
             label="ADR algorithm"
             tooltip="The ADR algorithm that will be used for controlling the device data-rate."
             name="adrAlgorithmId"
-            rules={[{ required: true, message: "Please select an ADR algorithm!" }]}
-          >
+            rules={[{ required: true, message: "Please select an ADR algorithm!" }]}>
             <Select disabled={props.disabled}>{adrOptions}</Select>
           </Form.Item>
           <Row gutter={24}>
@@ -516,8 +510,7 @@ function DeviceProfileForm(props: IProps) {
                 label="Flush queue on activate"
                 name="flushQueueOnActivate"
                 valuePropName="checked"
-                tooltip="If enabled, the device-queue will be flushed on ABP or OTAA activation."
-              >
+                tooltip="If enabled, the device-queue will be flushed on ABP or OTAA activation.">
                 <Switch />
               </Form.Item>
             </Col>
@@ -526,8 +519,7 @@ function DeviceProfileForm(props: IProps) {
                 label="Allow roaming"
                 name="allowRoaming"
                 valuePropName="checked"
-                tooltip="If enabled (and if roaming is configured on the server), this allows the device to use roaming."
-              >
+                tooltip="If enabled (and if roaming is configured on the server), this allows the device to use roaming.">
                 <Switch />
               </Form.Item>
             </Col>
@@ -543,8 +535,7 @@ function DeviceProfileForm(props: IProps) {
                     required: true,
                     message: "Please enter an uplink interval!",
                   },
-                ]}
-              >
+                ]}>
                 <InputNumber min={0} disabled={props.disabled} />
               </Form.Item>
             </Col>
@@ -552,17 +543,15 @@ function DeviceProfileForm(props: IProps) {
               <Form.Item
                 label="Device-status request frequency (req/day)"
                 tooltip="Frequency to initiate an End-Device status request (request/day). Set to 0 to disable."
-                name="deviceStatusReqInterval"
-              >
+                name="deviceStatusReqInterval">
                 <InputNumber min={0} disabled={props.disabled} />
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item
                 label="RX1 Delay (0 = use system default)"
-                tooltip="This option makes it possible to set a higher RX1 Delay for devices using this device-profile. Note that a lower value than the system default will be ignored. If configured and incremented, then ChirpStack will increase the downlink data delay with the same increment."
-                name="rx1Delay"
-              >
+                tooltip="This option makes it possible to set a higher RX1 Delay for devices using this device-profile. Note that a lower value than the system default will be ignored. If configured and incremented, then ROTIOT will increase the downlink data delay with the same increment."
+                name="rx1Delay">
                 <InputNumber min={0} max={15} disabled={props.disabled} />
               </Form.Item>
             </Col>
@@ -579,8 +568,7 @@ function DeviceProfileForm(props: IProps) {
                   label="RX1 delay"
                   name="abpRx1Delay"
                   tooltip="This value must match the RX1 delay of the device. Please refer to the device documentation."
-                  rules={[{ required: true, message: "Please enter a RX1 delay!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter a RX1 delay!" }]}>
                   <InputNumber min={0} max={15} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -594,8 +582,7 @@ function DeviceProfileForm(props: IProps) {
                       required: true,
                       message: "Please enter a RX1 data-rate offset!",
                     },
-                  ]}
-                >
+                  ]}>
                   <InputNumber min={0} max={15} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -613,8 +600,7 @@ function DeviceProfileForm(props: IProps) {
                       required: true,
                       message: "Please enter a RX2 data-rate!",
                     },
-                  ]}
-                >
+                  ]}>
                   <InputNumber min={0} max={15} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -628,8 +614,7 @@ function DeviceProfileForm(props: IProps) {
                       required: true,
                       message: "Please enter a RX2 frequency!",
                     },
-                  ]}
-                >
+                  ]}>
                   <InputNumber min={0} style={{ width: "200px" }} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -653,8 +638,7 @@ function DeviceProfileForm(props: IProps) {
                         required: true,
                         message: "Please enter a Class-B confirmed downlink timeout!",
                       },
-                    ]}
-                  >
+                    ]}>
                     <InputNumber min={0} />
                   </Form.Item>
                 </Col>
@@ -668,8 +652,7 @@ function DeviceProfileForm(props: IProps) {
                         required: true,
                         message: "Please select the ping-slot periodicity!",
                       },
-                    ]}
-                  >
+                    ]}>
                     <Select disabled={props.disabled}>
                       <Select.Option value={0}>Every second</Select.Option>
                       <Select.Option value={1}>Every 2 seconds</Select.Option>
@@ -694,8 +677,7 @@ function DeviceProfileForm(props: IProps) {
                         required: true,
                         message: "Please enter the ping-slot data-rate!",
                       },
-                    ]}
-                  >
+                    ]}>
                     <InputNumber min={0} disabled={props.disabled} />
                   </Form.Item>
                 </Col>
@@ -709,8 +691,7 @@ function DeviceProfileForm(props: IProps) {
                         required: true,
                         message: "Please enter the ping-slot frequency!",
                       },
-                    ]}
-                  >
+                    ]}>
                     <InputNumber min={0} style={{ width: "200px" }} disabled={props.disabled} />
                   </Form.Item>
                 </Col>
@@ -732,8 +713,7 @@ function DeviceProfileForm(props: IProps) {
                   required: true,
                   message: "Please enter a Class-C confirmed downlink timeout!",
                 },
-              ]}
-            >
+              ]}>
               <InputNumber min={0} disabled={props.disabled} />
             </Form.Item>
           )}
@@ -742,8 +722,7 @@ function DeviceProfileForm(props: IProps) {
           <Form.Item
             label="Payload codec"
             name="payloadCodecRuntime"
-            tooltip="By defining a payload codec, ChirpStack can encode and decode the binary device payload for you."
-          >
+            tooltip="By defining a payload codec, ROTIOT can encode and decode the binary device payload for you.">
             <Select onChange={onPayloadCodecRuntimeChange} disabled={props.disabled}>
               <Select.Option value={CodecRuntime.NONE}>None</Select.Option>
               <Select.Option value={CodecRuntime.CAYENNE_LPP}>Cayenne LPP</Select.Option>
@@ -761,8 +740,7 @@ function DeviceProfileForm(props: IProps) {
                 label="Device is a Relay"
                 name="isRelay"
                 valuePropName="checked"
-                tooltip="Enable this if the device(s) under this profile implement the Relay specification (please refer to the TS011 specification for more information)"
-              >
+                tooltip="Enable this if the device(s) under this profile implement the Relay specification (please refer to the TS011 specification for more information)">
                 <Switch onChange={onIsRelayChange} disabled={props.disabled} />
               </Form.Item>
             </Col>
@@ -772,8 +750,7 @@ function DeviceProfileForm(props: IProps) {
                   label="Relay enabled"
                   name="relayEnabled"
                   valuePropName="checked"
-                  tooltip="This will configure the Relay to be enabled / disabled through mac-commands."
-                >
+                  tooltip="This will configure the Relay to be enabled / disabled through mac-commands.">
                   <Switch disabled={props.disabled} />
                 </Form.Item>
               )}
@@ -785,8 +762,7 @@ function DeviceProfileForm(props: IProps) {
                 label="Device is a Relay capable end-device"
                 name="isRelayEd"
                 valuePropName="checked"
-                tooltip="Enable this of the device(s) under this profile are able to operate under a Relay as specified by the TS011 specification."
-              >
+                tooltip="Enable this of the device(s) under this profile are able to operate under a Relay as specified by the TS011 specification.">
                 <Switch onChange={onIsRelayEdChange} disabled={props.disabled} />
               </Form.Item>
             </Col>
@@ -796,8 +772,7 @@ function DeviceProfileForm(props: IProps) {
                   label="Only use Relay (end-device)"
                   name="relayEdRelayOnly"
                   valuePropName="checked"
-                  tooltip="If enabled, device(s) under this profile will only be able to communicate through a Relay device. Uplink messages received directly by ChirpStack will be discarded. Enabling this feature can be helpful for testing the Relay communication."
-                >
+                  tooltip="If enabled, device(s) under this profile will only be able to communicate through a Relay device. Uplink messages received directly by ROTIOT will be discarded. Enabling this feature can be helpful for testing the Relay communication.">
                   <Switch disabled={props.disabled} />
                 </Form.Item>
               )}
@@ -815,8 +790,7 @@ function DeviceProfileForm(props: IProps) {
                       required: true,
                       message: "Please enter a channel number!",
                     },
-                  ]}
-                >
+                  ]}>
                   <InputNumber min={0} max={1} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -825,8 +799,7 @@ function DeviceProfileForm(props: IProps) {
                   label="Second channel frequency (Hz)"
                   name="relaySecondChannelFreq"
                   tooltip="To disable the second channel, set this value to 0."
-                  rules={[{ required: true, message: "Please enter a frequency!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter a frequency!" }]}>
                   <InputNumber min={0} style={{ width: "200px" }} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -834,8 +807,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="Second channel data-rate"
                   name="relaySecondChannelDr"
-                  rules={[{ required: true, message: "Please enter a data-rate!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter a data-rate!" }]}>
                   <InputNumber min={0} max={15} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -847,8 +819,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="Second channel ACK offset"
                   name="relaySecondChannelAckOffset"
-                  rules={[{ required: true, message: "Please select an ACK offset!" }]}
-                >
+                  rules={[{ required: true, message: "Please select an ACK offset!" }]}>
                   <Select disabled={props.disabled}>
                     <Select.Option value={SecondChAckOffset.KHZ_0}>0 kHz</Select.Option>
                     <Select.Option value={SecondChAckOffset.KHZ_200}>200 kHz</Select.Option>
@@ -869,8 +840,7 @@ function DeviceProfileForm(props: IProps) {
                         required: true,
                         message: "Please select a CAD periodicity!",
                       },
-                    ]}
-                  >
+                    ]}>
                     <Select disabled={props.disabled}>
                       <Select.Option value={CadPeriodicity.SEC_1}>1 second</Select.Option>
                       <Select.Option value={CadPeriodicity.MS_500}>500 milliseconds</Select.Option>
@@ -895,8 +865,7 @@ function DeviceProfileForm(props: IProps) {
                       required: true,
                       message: "Please select an activation mode!",
                     },
-                  ]}
-                >
+                  ]}>
                   <Select disabled={props.disabled}>
                     <Select.Option value={RelayModeActivation.DISABLE_RELAY_MODE}>Disable relay mode</Select.Option>
                     <Select.Option value={RelayModeActivation.ENABLE_RELAY_MODE}>Enable relay mode</Select.Option>
@@ -917,8 +886,7 @@ function DeviceProfileForm(props: IProps) {
                       required: true,
                       message: "Please select an enable level!",
                     },
-                  ]}
-                >
+                  ]}>
                   <Select disabled={props.disabled}>
                     <Select.Option value={0}>8</Select.Option>
                     <Select.Option value={1}>16</Select.Option>
@@ -931,8 +899,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="Back-off"
                   name="relayEdBackOff"
-                  tooltip="This indicates how the end-device SHALL behave when it does not receive a WOR ACK frame. 0 = Always send a LoRaWAN uplink. 1..63 = Send a LoRaWAN uplink after X WOR frames without a WOR ACK."
-                >
+                  tooltip="This indicates how the end-device SHALL behave when it does not receive a WOR ACK frame. 0 = Always send a LoRaWAN uplink. 1..63 = Send a LoRaWAN uplink after X WOR frames without a WOR ACK.">
                   <InputNumber min={0} max={63} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -944,8 +911,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="End-device uplink limit bucket size"
                   name="relayEdUplinkLimitBucketSize"
-                  tooltip="Indicates the multiplier to determine the bucket size"
-                >
+                  tooltip="Indicates the multiplier to determine the bucket size">
                   <Select disabled={props.disabled}>
                     <Select.Option value={0}>1 x reload rate</Select.Option>
                     <Select.Option value={1}>2 x reload rate</Select.Option>
@@ -958,8 +924,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="End-device uplink limit reload rate"
                   name="relayEdUplinkLimitReloadRate"
-                  tooltip="0..62 = X tokens every hour, 63 = no limitation (forward all valid uplinks)"
-                >
+                  tooltip="0..62 = X tokens every hour, 63 = no limitation (forward all valid uplinks)">
                   <InputNumber min={0} max={63} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -971,8 +936,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="Join-request limit bucket size"
                   name="relayJoinReqLimitBucketSize"
-                  tooltip="Indicates the multiplier to determine the bucket size"
-                >
+                  tooltip="Indicates the multiplier to determine the bucket size">
                   <Select disabled={props.disabled}>
                     <Select.Option value={0}>1 x reload rate</Select.Option>
                     <Select.Option value={1}>2 x reload rate</Select.Option>
@@ -985,8 +949,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="Join-request limit reload rate"
                   name="relayJoinReqLimitReloadRate"
-                  tooltip="0..126 = X tokens every hour, 127 = no limitation"
-                >
+                  tooltip="0..126 = X tokens every hour, 127 = no limitation">
                   <InputNumber min={0} max={127} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -994,8 +957,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="Notify limit bucket size"
                   name="relayNotifyLimitBucketSize"
-                  tooltip="Indicates the multiplier to determine the bucket size"
-                >
+                  tooltip="Indicates the multiplier to determine the bucket size">
                   <Select disabled={props.disabled}>
                     <Select.Option value={0}>1 x reload rate</Select.Option>
                     <Select.Option value={1}>2 x reload rate</Select.Option>
@@ -1008,8 +970,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="Notify limit reload rate"
                   name="relayNotifyLimitReloadRate"
-                  tooltip="0..126 = X tokens every hour, 127 = no limitation"
-                >
+                  tooltip="0..126 = X tokens every hour, 127 = no limitation">
                   <InputNumber min={0} max={127} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -1021,8 +982,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="Global uplink limit bucket size"
                   name="relayGlobalUplinkLimitBucketSize"
-                  tooltip="Indicates the multiplier to determine the bucket size"
-                >
+                  tooltip="Indicates the multiplier to determine the bucket size">
                   <Select disabled={props.disabled}>
                     <Select.Option value={0}>1 x reload rate</Select.Option>
                     <Select.Option value={1}>2 x reload rate</Select.Option>
@@ -1035,8 +995,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="Global uplink limit reload rate"
                   name="relayGlobalUplinkLimitReloadRate"
-                  tooltip="0..126 = X tokens every hour, 127 = no limitation"
-                >
+                  tooltip="0..126 = X tokens every hour, 127 = no limitation">
                   <InputNumber min={0} max={127} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -1044,8 +1003,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="Overall limit bucket size"
                   name="relayOverallLimitBucketSize"
-                  tooltip="Indicates the multiplier to determine the bucket size"
-                >
+                  tooltip="Indicates the multiplier to determine the bucket size">
                   <Select disabled={props.disabled}>
                     <Select.Option value={0}>1 x reload rate</Select.Option>
                     <Select.Option value={1}>2 x reload rate</Select.Option>
@@ -1058,8 +1016,7 @@ function DeviceProfileForm(props: IProps) {
                 <Form.Item
                   label="Overall limit reload rate"
                   name="relayOverallLimitReloadRate"
-                  tooltip="0..126 = X tokens every hour, 127 = no limitation"
-                >
+                  tooltip="0..126 = X tokens every hour, 127 = no limitation">
                   <InputNumber min={0} max={127} disabled={props.disabled} />
                 </Form.Item>
               </Col>
@@ -1072,8 +1029,7 @@ function DeviceProfileForm(props: IProps) {
               <Form.Item
                 label="Clock sync version (TS003)"
                 name={["appLayerParams", "ts003Version"]}
-                tooltip="If an implemented version is selected, ChirpStack will handle payloads received on the matching fPort"
-              >
+                tooltip="If an implemented version is selected, ROTIOT will handle payloads received on the matching fPort">
                 <Select disabled={props.disabled}>
                   <Select.Option value={Ts003Version.TS003_NOT_IMPLEMENTED}>Not implemented</Select.Option>
                   <Select.Option value={Ts003Version.TS003_V100}>v1.0.0</Select.Option>
@@ -1092,8 +1048,7 @@ function DeviceProfileForm(props: IProps) {
               <Form.Item
                 label="Fragmented data block transport (TS004)"
                 name={["appLayerParams", "ts004Version"]}
-                tooltip="If an implemented version is selected, ChirpStack will handle payloads received on the matching fPort"
-              >
+                tooltip="If an implemented version is selected, ROTIOT will handle payloads received on the matching fPort">
                 <Select disabled={props.disabled}>
                   <Select.Option value={Ts004Version.TS004_NOT_IMPLEMENTED}>Not implemented</Select.Option>
                   <Select.Option value={Ts004Version.TS004_V100}>v1.0.0</Select.Option>
@@ -1112,8 +1067,7 @@ function DeviceProfileForm(props: IProps) {
               <Form.Item
                 label="Remote multicast setup version (TS005)"
                 name={["appLayerParams", "ts005Version"]}
-                tooltip="If an implemented version is selected, ChirpStack will handle payloads received on the matching fPort"
-              >
+                tooltip="If an implemented version is selected, ROTIOT will handle payloads received on the matching fPort">
                 <Select disabled={props.disabled}>
                   <Select.Option value={Ts005Version.TS005_NOT_IMPLEMENTED}>Not implemented</Select.Option>
                   <Select.Option value={Ts005Version.TS005_V100}>v1.0.0</Select.Option>
@@ -1139,8 +1093,7 @@ function DeviceProfileForm(props: IProps) {
                         {...restField}
                         name={[name, 0]}
                         fieldKey={[name, 0]}
-                        rules={[{ required: true, message: "Please enter a key!" }]}
-                      >
+                        rules={[{ required: true, message: "Please enter a key!" }]}>
                         <Input placeholder="Key" disabled={props.disabled} />
                       </Form.Item>
                     </Col>
@@ -1149,8 +1102,7 @@ function DeviceProfileForm(props: IProps) {
                         {...restField}
                         name={[name, 1]}
                         fieldKey={[name, 1]}
-                        rules={[{ required: true, message: "Please enter a value!" }]}
-                      >
+                        rules={[{ required: true, message: "Please enter a value!" }]}>
                         <Input placeholder="Value" disabled={props.disabled} />
                       </Form.Item>
                     </Col>
@@ -1171,7 +1123,7 @@ function DeviceProfileForm(props: IProps) {
         <Tabs.TabPane tab="Measurements" key="9" forceRender>
           <Card bordered={false}>
             <p>
-              ChirpStack can aggregate and visualize decoded device measurements in the device dashboard. To setup the
+              ROTIOT can aggregate and visualize decoded device measurements in the device dashboard. To setup the
               aggregation of device measurements, you must configure the key, kind of measurement and name
               (user-defined). The following measurement-kinds can be selected:
             </p>
@@ -1198,8 +1150,7 @@ function DeviceProfileForm(props: IProps) {
             label="Automatically detect measurement keys"
             name="autoDetectMeasurements"
             valuePropName="checked"
-            tooltip="If enabled, measurement-keys will be automatically added based on the decoded payload keys. If the decoded payload contains random keys, you want to disable auto-detection."
-          >
+            tooltip="If enabled, measurement-keys will be automatically added based on the decoded payload keys. If the decoded payload contains random keys, you want to disable auto-detection.">
             <Switch />
           </Form.Item>
           <Form.List name="measurementsMap">
@@ -1212,8 +1163,7 @@ function DeviceProfileForm(props: IProps) {
                         {...restField}
                         name={[name, 0]}
                         fieldKey={[name, 0]}
-                        rules={[{ required: true, message: "Please enter a key!" }]}
-                      >
+                        rules={[{ required: true, message: "Please enter a key!" }]}>
                         <Input placeholder="Measurement key" disabled={props.disabled} />
                       </Form.Item>
                     </Col>
@@ -1222,8 +1172,7 @@ function DeviceProfileForm(props: IProps) {
                         {...restField}
                         name={[name, 1, "kind"]}
                         fieldKey={[name, 1, "kind"]}
-                        rules={[{ required: true, message: "Please select a kind!" }]}
-                      >
+                        rules={[{ required: true, message: "Please select a kind!" }]}>
                         <Select disabled={props.disabled} placeholder="Measurement kind">
                           <Select.Option value={MeasurementKind.UNKNOWN}>Unknown / unset</Select.Option>
                           <Select.Option value={MeasurementKind.COUNTER}>Counter</Select.Option>

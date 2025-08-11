@@ -1,20 +1,20 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import type { MenuProps } from "antd";
-import { Menu, Typography } from "antd";
 import {
-  CloudOutlined,
-  HomeOutlined,
-  UserOutlined,
-  DashboardOutlined,
-  KeyOutlined,
-  WifiOutlined,
-  ControlOutlined,
   AppstoreOutlined,
+  CloudOutlined,
   CompassOutlined,
+  ControlOutlined,
+  DashboardOutlined,
+  HomeOutlined,
+  KeyOutlined,
   RadarChartOutlined,
+  UserOutlined,
+  WifiOutlined,
 } from "@ant-design/icons";
+import type { MenuProps } from "antd";
+import { Menu } from "antd";
 
 import type { GetTenantResponse, ListTenantsResponse } from "@chirpstack/chirpstack-api-grpc-web/api/tenant_pb";
 import { ListTenantsRequest } from "@chirpstack/chirpstack-api-grpc-web/api/tenant_pb";
@@ -23,10 +23,9 @@ import type { GetVersionResponse } from "@chirpstack/chirpstack-api-grpc-web/api
 
 import type { OptionCallbackFunc, OptionsCallbackFunc } from "../components/Autocomplete";
 import Autocomplete from "../components/Autocomplete";
-import Admin from "../components/Admin";
-import TenantStore from "../stores/TenantStore";
-import SessionStore from "../stores/SessionStore";
 import InternalStore from "../stores/InternalStore";
+import SessionStore from "../stores/SessionStore";
+import TenantStore from "../stores/TenantStore";
 
 function SideMenu() {
   const [tenantId, setTenantId] = useState<string>("");
@@ -166,7 +165,7 @@ function SideMenu() {
   if (SessionStore.isAdmin()) {
     items.push({
       key: "ns",
-      label: "Network Server",
+      label: "ROTIOT Server",
       icon: <CloudOutlined />,
       children: [
         {
@@ -204,7 +203,7 @@ function SideMenu() {
   } else {
     items.push({
       key: "ns",
-      label: "Network Server",
+      label: "ROTIOT Server",
       icon: <CloudOutlined />,
       children: [
         {
@@ -217,52 +216,87 @@ function SideMenu() {
   }
 
   if (tenantId !== "") {
+    // items.push({
+    //   key: "tenant",
+    //   label: "Tenant",
+    //   icon: <HomeOutlined />,
+    //   children: [
+    //     {
+    //       key: "tenant-dashboard",
+    //       icon: <DashboardOutlined />,
+    //       label: <Link to={`/tenants/${tenantId}`}>Dashboard</Link>,
+    //     },
+    //     {
+    //       key: "tenant-users",
+    //       icon: <UserOutlined />,
+    //       label: <Link to={`/tenants/${tenantId}/users`}>Users</Link>,
+    //     },
+    //     {
+    //       key: "tenant-api-keys",
+    //       icon: <KeyOutlined />,
+    //       label: <Link to={`/tenants/${tenantId}/api-keys`}>API Keys</Link>,
+    //     },
+    //     {
+    //       key: "tenant-device-profiles",
+    //       icon: <ControlOutlined />,
+    //       label: <Link to={`/tenants/${tenantId}/device-profiles`}>Device Profiles</Link>,
+    //     },
+    //     {
+    //       key: "tenant-gateways",
+    //       icon: <WifiOutlined />,
+    //       label: <Link to={`/tenants/${tenantId}/gateways`}>Gateways</Link>,
+    //     },
+    //     {
+    //       key: "tenant-gateways-mesh",
+    //       icon: <RadarChartOutlined />,
+    //       label: <Link to={`/tenants/${tenantId}/gateways/mesh/relays`}>Gateway Mesh</Link>,
+    //     },
+    //     {
+    //       key: "tenant-applications",
+    //       icon: <AppstoreOutlined />,
+    //       label: <Link to={`/tenants/${tenantId}/applications`}>Applications</Link>,
+    //     },
+    //   ],
+    // });
     items.push({
-      key: "tenant",
-      label: "Tenant",
-      icon: <HomeOutlined />,
-      children: [
-        {
-          key: "tenant-dashboard",
-          icon: <DashboardOutlined />,
-          label: <Link to={`/tenants/${tenantId}`}>Dashboard</Link>,
-        },
-        {
-          key: "tenant-users",
-          icon: <UserOutlined />,
-          label: <Link to={`/tenants/${tenantId}/users`}>Users</Link>,
-        },
-        {
-          key: "tenant-api-keys",
-          icon: <KeyOutlined />,
-          label: <Link to={`/tenants/${tenantId}/api-keys`}>API Keys</Link>,
-        },
-        {
-          key: "tenant-device-profiles",
-          icon: <ControlOutlined />,
-          label: <Link to={`/tenants/${tenantId}/device-profiles`}>Device Profiles</Link>,
-        },
-        {
-          key: "tenant-gateways",
-          icon: <WifiOutlined />,
-          label: <Link to={`/tenants/${tenantId}/gateways`}>Gateways</Link>,
-        },
-        {
-          key: "tenant-gateways-mesh",
-          icon: <RadarChartOutlined />,
-          label: <Link to={`/tenants/${tenantId}/gateways/mesh/relays`}>Gateway Mesh</Link>,
-        },
-        {
-          key: "tenant-applications",
-          icon: <AppstoreOutlined />,
-          label: <Link to={`/tenants/${tenantId}/applications`}>Applications</Link>,
-        },
-      ],
+      key: "tenant-dashboard",
+      icon: <DashboardOutlined />,
+      label: <Link to={`/tenants/${tenantId}`}>Dashboard</Link>,
+    });
+    items.push({
+      key: "tenant-users",
+      icon: <UserOutlined />,
+      label: <Link to={`/tenants/${tenantId}/users`}>Users</Link>,
+    });
+    items.push({
+      key: "tenant-api-keys",
+      icon: <KeyOutlined />,
+      label: <Link to={`/tenants/${tenantId}/api-keys`}>API Keys</Link>,
+    });
+    items.push({
+      key: "tenant-device-profiles",
+      icon: <ControlOutlined />,
+      label: <Link to={`/tenants/${tenantId}/device-profiles`}>Device Profiles</Link>,
+    });
+    items.push({
+      key: "tenant-gateways",
+      icon: <WifiOutlined />,
+      label: <Link to={`/tenants/${tenantId}/gateways`}>Gateways</Link>,
+    });
+    items.push({
+      key: "tenant-gateways-mesh",
+      icon: <RadarChartOutlined />,
+      label: <Link to={`/tenants/${tenantId}/gateways/mesh/relays`}>Gateway Mesh</Link>,
+    });
+    items.push({
+      key: "tenant-applications",
+      icon: <AppstoreOutlined />,
+      label: <Link to={`/tenants/${tenantId}/applications`}>Applications</Link>,
     });
   }
 
   return (
-    <div>
+    <div className="rotiot-header">
       <Autocomplete
         placeholder="Select tenant"
         className="tenant-select"
@@ -272,17 +306,17 @@ function SideMenu() {
         value={tenantId}
       />
       <Menu
-        mode="inline"
-        openKeys={["ns", "tenant"]}
+        mode="horizontal"
+        //openKeys={["ns", "tenant"]}
         selectedKeys={[selectedKey]}
         expandIcon={<div></div>}
         items={items}
       />
-      <Admin>
+      {/* <Admin>
         <Typography.Text type="secondary" className="version">
-          Version: v{version}
+          &#169; ROTIOT Version: v{version}
         </Typography.Text>
-      </Admin>
+      </Admin> */}
     </div>
   );
 }

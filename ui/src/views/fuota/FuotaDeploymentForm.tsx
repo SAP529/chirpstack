@@ -1,27 +1,28 @@
 import { useEffect, useState } from "react";
 
-import { Tabs, Form, Input, InputNumber, Select, Row, Col, Button, Upload, UploadFile, Switch } from "antd";
-import { UploadOutlined, MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import type { UploadFile } from "antd";
+import { Button, Col, Form, Input, InputNumber, Row, Select, Switch, Tabs, Upload } from "antd";
 
-import type { Tenant } from "@chirpstack/chirpstack-api-grpc-web/api/tenant_pb";
-import { FuotaDeployment, RequestFragmentationSessionStatus } from "@chirpstack/chirpstack-api-grpc-web/api/fuota_pb";
 import type {
-  ListDeviceProfilesResponse,
   GetDeviceProfileResponse,
+  ListDeviceProfilesResponse,
 } from "@chirpstack/chirpstack-api-grpc-web/api/device_profile_pb";
 import {
-  ListDeviceProfilesRequest,
   GetDeviceProfileRequest,
+  ListDeviceProfilesRequest,
 } from "@chirpstack/chirpstack-api-grpc-web/api/device_profile_pb";
+import { FuotaDeployment, RequestFragmentationSessionStatus } from "@chirpstack/chirpstack-api-grpc-web/api/fuota_pb";
 import {
-  MulticastGroupType,
   MulticastGroupSchedulingType,
+  MulticastGroupType,
 } from "@chirpstack/chirpstack-api-grpc-web/api/multicast_group_pb";
+import type { Tenant } from "@chirpstack/chirpstack-api-grpc-web/api/tenant_pb";
 
-import { onFinishFailed, getEnumName } from "../helpers";
-import DeviceProfileStore from "../../stores/DeviceProfileStore";
+import type { OptionCallbackFunc, OptionsCallbackFunc } from "../../components/Autocomplete";
 import AutocompleteInput from "../../components/AutocompleteInput";
-import type { OptionsCallbackFunc, OptionCallbackFunc } from "../../components/Autocomplete";
+import DeviceProfileStore from "../../stores/DeviceProfileStore";
+import { onFinishFailed } from "../helpers";
 
 interface IProps {
   tenant: Tenant;
@@ -155,8 +156,7 @@ function FuotaDeploymentForm(props: IProps) {
       initialValues={props.initialValues.toObject()}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      form={form}
-    >
+      form={form}>
       <Tabs>
         <Tabs.TabPane tab="Deployment" key="1">
           <Form.Item label="Name" name="name" rules={[{ required: true, message: "Please enter a name!" }]}>
@@ -177,9 +177,8 @@ function FuotaDeploymentForm(props: IProps) {
               <Form.Item
                 label="Unicast retry count (max)"
                 name="unicastMaxRetryCount"
-                tooltip="This defines how many times ChirpStack will retry unicast commands in case not acknowledged by the end-device."
-                required
-              >
+                tooltip="This defines how many times ROTIOT will retry unicast commands in case not acknowledged by the end-device."
+                required>
                 <InputNumber min={0} max={5} disabled={props.disabled} style={{ width: "100%" }} />
               </Form.Item>
             </Col>
@@ -190,8 +189,7 @@ function FuotaDeploymentForm(props: IProps) {
                 label="Multicast group-type"
                 name="multicastGroupType"
                 tooltip="The multicast-group type defines the way how multicast frames are scheduled by the network-server."
-                rules={[{ required: true, message: "Please select a multicast group-type!" }]}
-              >
+                rules={[{ required: true, message: "Please select a multicast group-type!" }]}>
                 <Select onChange={onMulticastGroupTypeChange} disabled={props.disabled}>
                   <Select.Option value={MulticastGroupType.CLASS_C}>Class-C</Select.Option>
                   <Select.Option value={MulticastGroupType.CLASS_B}>Class-B</Select.Option>
@@ -216,8 +214,7 @@ function FuotaDeploymentForm(props: IProps) {
               <Form.Item
                 label="Class-C scheduling type"
                 name="multicastClassCSchedulingType"
-                tooltip="In order to reach all devices, it might be needed to transmit a downlink through multiple gateways. In case of Delay each gateway will transmit one by one, in case of GPS Time all required gateways will transmit at the same GPS time."
-              >
+                tooltip="In order to reach all devices, it might be needed to transmit a downlink through multiple gateways. In case of Delay each gateway will transmit one by one, in case of GPS Time all required gateways will transmit at the same GPS time.">
                 <Select disabled={isMulticastClassB || props.disabled}>
                   <Select.Option value={MulticastGroupSchedulingType.DELAY}>Delay</Select.Option>
                   <Select.Option value={MulticastGroupSchedulingType.GPS_TIME}>GPS Time</Select.Option>
@@ -231,8 +228,7 @@ function FuotaDeploymentForm(props: IProps) {
                 label="Multicast data-rate"
                 name="multicastDr"
                 rules={[{ required: true, message: "Please enter a multicast data-rate!" }]}
-                tooltip="The data-rate to use when transmitting the multicast frames. Please refer to the LoRaWAN Regional Parameters specification for valid values."
-              >
+                tooltip="The data-rate to use when transmitting the multicast frames. Please refer to the LoRaWAN Regional Parameters specification for valid values.">
                 <InputNumber min={0} max={15} disabled={props.disabled} style={{ width: "100%" }} addonBefore="DR" />
               </Form.Item>
             </Col>
@@ -241,8 +237,7 @@ function FuotaDeploymentForm(props: IProps) {
                 label="Multicast frequency (Hz)"
                 name="multicastFrequency"
                 tooltip="The frequency to use when transmitting the multicast frames. Please refer to the LoRaWAN Regional Parameters specification for valid values."
-                rules={[{ required: true, message: "Please enter a frequency!" }]}
-              >
+                rules={[{ required: true, message: "Please enter a frequency!" }]}>
                 <InputNumber min={0} disabled={props.disabled} style={{ width: "100%" }} addonAfter="Hz" />
               </Form.Item>
             </Col>
@@ -257,8 +252,7 @@ function FuotaDeploymentForm(props: IProps) {
               <Form.Item
                 label="Fragmentation status request"
                 name="requestFragmentationSessionStatus"
-                tooltip="After fragment enqueue is recommended for Class-A devices, after session timeout is recommended for Class-B / Class-C devices."
-              >
+                tooltip="After fragment enqueue is recommended for Class-A devices, after session timeout is recommended for Class-B / Class-C devices.">
                 <Select disabled={props.disabled}>
                   <Select.Option value={RequestFragmentationSessionStatus.NO_REQUEST}>Do not request</Select.Option>
                   <Select.Option value={RequestFragmentationSessionStatus.AFTER_FRAGMENT_ENQUEUE}>
@@ -276,8 +270,7 @@ function FuotaDeploymentForm(props: IProps) {
               <Form.Item
                 label="Calculate multicast-timeout"
                 name="calculateMulticastTimeout"
-                tooltip="If checked, ChirpStack will calculate the multicast-timeout."
-              >
+                tooltip="If checked, ROTIOT will calculate the multicast-timeout.">
                 <Switch onChange={(v: boolean) => setCalculateMulticastTimeout(v)} disabled={props.disabled} />
               </Form.Item>
             </Col>
@@ -329,8 +322,7 @@ function FuotaDeploymentForm(props: IProps) {
               <Form.Item
                 label="Calculate fragment size"
                 name="calculateFragmentationFragmentSize"
-                tooltip="If checked, ChirpStack will calculate the fragment size for fragmentation."
-              >
+                tooltip="If checked, ROTIOT will calculate the fragment size for fragmentation.">
                 <Switch onChange={(v: boolean) => setCalculateFragmentationFragmentSize(v)} disabled={props.disabled} />
               </Form.Item>
             </Col>
@@ -352,8 +344,7 @@ function FuotaDeploymentForm(props: IProps) {
               onRemove={onRemoveUpload}
               maxCount={1}
               fileList={fileList}
-              disabled={props.disabled}
-            >
+              disabled={props.disabled}>
               <Button icon={<UploadOutlined />} disabled={props.disabled}>
                 Click to upload
               </Button>
@@ -371,8 +362,7 @@ function FuotaDeploymentForm(props: IProps) {
                         {...restField}
                         name={[name, 0]}
                         fieldKey={[name, 0]}
-                        rules={[{ required: true, message: "Please enter a key!" }]}
-                      >
+                        rules={[{ required: true, message: "Please enter a key!" }]}>
                         <Input placeholder="Key" />
                       </Form.Item>
                     </Col>
@@ -381,8 +371,7 @@ function FuotaDeploymentForm(props: IProps) {
                         {...restField}
                         name={[name, 1]}
                         fieldKey={[name, 1]}
-                        rules={[{ required: true, message: "Please enter a value!" }]}
-                      >
+                        rules={[{ required: true, message: "Please enter a value!" }]}>
                         <Input placeholder="Value" />
                       </Form.Item>
                     </Col>

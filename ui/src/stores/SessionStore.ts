@@ -1,15 +1,15 @@
 import google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 import type { Metadata } from "grpc-web";
 
-import { EventEmitter } from "events";
 import { InternalServiceClient } from "@chirpstack/chirpstack-api-grpc-web/api/internal_grpc_web_pb";
 import type {
-  UserTenantLink,
-  OpenIdConnectLoginRequest,
   OAuth2LoginRequest,
+  OpenIdConnectLoginRequest,
+  UserTenantLink,
 } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
 import { LoginRequest } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
 import type { User } from "@chirpstack/chirpstack-api-grpc-web/api/user_pb";
+import { EventEmitter } from "events";
 
 import { HandleError, HandleLoginError } from "./helpers";
 
@@ -39,6 +39,7 @@ class SessionStore extends EventEmitter {
 
       this.setToken(resp.getJwt());
       this.fetchProfile(callbackFunc);
+      document.body.classList.remove("login_bg");
     });
   };
 

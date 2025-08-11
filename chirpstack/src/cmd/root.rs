@@ -10,8 +10,8 @@ use crate::{adr, api, applayer::fuota, backend, downlink, integration, region, s
 pub async fn run() -> Result<()> {
     info!(
         version = env!("CARGO_PKG_VERSION"),
-        docs = "https://www.chirpstack.io/",
-        "Starting ChirpStack LoRaWAN Network Server"
+        docs = "https://www.rotiot.ch/",
+        "Starting ROTIOT LoRaWAN Network Server"
     );
 
     storage::setup().await?;

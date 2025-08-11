@@ -1,7 +1,7 @@
-import { Form, Input, Button, Select, Row, Col, Typography, Space } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Col, Form, Input, Row, Select, Space, Typography } from "antd";
 
-import { HttpIntegration, Encoding } from "@chirpstack/chirpstack-api-grpc-web/api/application_pb";
+import { Encoding, HttpIntegration } from "@chirpstack/chirpstack-api-grpc-web/api/application_pb";
 
 import { onFinishFailed } from "../../helpers";
 
@@ -32,13 +32,11 @@ function HttpIntegrationForm(props: IProps) {
       layout="vertical"
       initialValues={props.initialValues.toObject()}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-    >
+      onFinishFailed={onFinishFailed}>
       <Form.Item
         label="Payload encoding"
         name="encoding"
-        rules={[{ required: true, message: "Please select an encoding!" }]}
-      >
+        rules={[{ required: true, message: "Please select an encoding!" }]}>
         <Select>
           <Select.Option value={Encoding.JSON}>JSON</Select.Option>
           <Select.Option value={Encoding.PROTOBUF}>Protobuf (binary)</Select.Option>
@@ -47,9 +45,8 @@ function HttpIntegrationForm(props: IProps) {
       <Form.Item
         label="Event endpoint URL(s)"
         name="eventEndpointUrl"
-        tooltip="ChirpStack will make a POST request to this URL(s) with 'event' as query parameter. Multiple URLs can be defined as a comma separated list. Whitespace will be automatically removed."
-        rules={[{ required: true, message: "Please enter an event endpoint URL!" }]}
-      >
+        tooltip="ROTIOT Connecting Technolgogies will make a POST request to this URL(s) with 'event' as query parameter. Multiple URLs can be defined as a comma separated list. Whitespace will be automatically removed."
+        rules={[{ required: true, message: "Please enter an event endpoint URL!" }]}>
         <Input />
       </Form.Item>
       <Space direction="vertical" style={{ width: "100%" }}>
@@ -64,8 +61,7 @@ function HttpIntegrationForm(props: IProps) {
                       {...restField}
                       name={[name, 0]}
                       fieldKey={[name, 0]}
-                      rules={[{ required: true, message: "Please enter a key!" }]}
-                    >
+                      rules={[{ required: true, message: "Please enter a key!" }]}>
                       <Input placeholder="Key" />
                     </Form.Item>
                   </Col>
@@ -74,8 +70,7 @@ function HttpIntegrationForm(props: IProps) {
                       {...restField}
                       name={[name, 1]}
                       fieldKey={[name, 1]}
-                      rules={[{ required: true, message: "Please enter a value!" }]}
-                    >
+                      rules={[{ required: true, message: "Please enter a value!" }]}>
                       <Input placeholder="Value" />
                     </Form.Item>
                   </Col>

@@ -1,6 +1,6 @@
-.layout {
+/* .layout {
   margin-left: 300px;
-}
+} */
 
 .layout-header {
   background: #ffffff;
@@ -11,11 +11,13 @@
   position: fixed;
   width: 100%;
 }
+.layout-header div{
+  justify-content: space-between;
+}
 
 .layout-header .logo {
   float: left;
-  margin-top: 16px;
-  height: 32px;
+  height: 60px;
 }
 
 .layout-header .actions {
@@ -26,7 +28,11 @@
   display: inline;
   padding-left: 24px;
 }
-
+.layout-header .logo-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .layout-menu {
   padding-top: 85px;
 
@@ -134,4 +140,181 @@ pre {
 
 .input-code input {
   font-family: monospace !important;
+}
+.layout-header {
+  background-color: #8B0000 !important;
+}
+.ant-menu-light .ant-menu-item-selected a{
+  color: #8B0000 !important;
+  font-weight: bold;
+}
+.ant-menu-title-content{
+  color: #8B0000 !important;
+}
+.ant-menu .ant-menu-item .ant-menu-item-icon, .ant-menu .ant-menu-submenu-title .ant-menu-item-icon{
+  color: #8B0000 !important;
+}
+.ant-layout-sider .ant-menu-light .ant-menu-item-selected, .ant-select-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled){
+  background-color: #8b00005e !important;
+}
+.ant-btn-variant-solid{
+background-color: #8B0000 !important;
+}
+.ant-input-outlined:focus, ant-tabs-tab ant-tabs-tab-active, .ant-select-outlined:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover .ant-select-selector, .ant-input-outlined:focus,
+.ant-input-outlined:focus-within{
+  border-color: #8B0000 !important;
+}
+.rotiot-user-btn{
+  background-color: #000 !important;
+}
+.ant-menu-light .ant-menu-item-selected a, .ant-menu-light.ant-menu-horizontal>.ant-menu-item-selected::after, .ant-menu-light.ant-menu-horizontal>.ant-menu-item:hover::after{
+  border-color: #8B0000 !important;
+}
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+  color: #8B0000;
+  text-shadow: 0 0 0.25px #8B0000;
+}
+.ant-input-outlined:hover{
+  border-color: #8B0000 !important;
+}
+.ant-tabs .ant-tabs-tab:hover{
+  color: #000;
+    text-shadow: 0 0 0.25px #000;
+}
+.ant-switch.ant-switch-checked{
+  background-color: #8B0000 !important;
+}
+body{
+  border-bottom-color: #8B0000 !important;
+}
+.login_bg .ant-layout {
+  background: none;
+}
+.login_bg {
+  background: url('/login-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+a {
+  color: #8B0000;
+  font-weight: 500;
+}
+a:hover {
+  color: #000;
+  font-weight: bold;
+}
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):active, 
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before, 
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before,
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover::before,
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled), 
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover,
+.ant-radio-button-wrapper:hover{
+  background-color: #8B0000 !important;
+  color:#fff;
+  border-color: #8B0000 !important;
+}
+.ant-tabs-tab-active{
+  border-bottom-color: #8B0000 !important;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.5);
+}
+.rotiot-header{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rotiot-header ul{
+  display: flex;
+  width: 100%;
+}
+.rotiot-header .ant-select-single {
+  font-size: 14px;
+    height: 47px;
+    width: 250px;
+}
+.layout-footer{
+  background-color: #8b0000;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner, .ant-radio-wrapper .ant-radio-checked .ant-radio-inner{
+  background-color: #8b0000;
+  border-color: #8b0000;
+}
+.ant-checkbox-indeterminate .ant-checkbox-inner:after{
+  background-color: #8b0000;
+}
+.ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner{
+  background-color: #8b0000;
+  border-color: #8b0000;
+}
+.ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner,
+.ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner{
+  border-color: #8b0000;
+}
+.ant-pagination .ant-pagination-item-active a{
+  color: #8b0000;
+}
+.ant-pagination .ant-pagination-item-active{
+  border-color: #8b0000;
+}
+.ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-item-selected,
+.ant-dropdown-menu-submenu .ant-dropdown-menu .ant-dropdown-menu-item-selected,
+.ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-submenu-title-selected,
+.ant-dropdown-menu-submenu .ant-dropdown-menu .ant-dropdown-menu-submenu-title-selected{
+color: #8b0000;
+}
+.ant-btn-color-link.ant-btn-variant-link{
+  color:#000;
+  font-weight: 600;
+}
+.ant-btn-color-link.ant-btn-variant-link:not(:disabled):not(.ant-btn-disabled):hover{
+  color: #8b0000;
+}
+.ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-item-selected,
+.ant-dropdown-menu-submenu .ant-dropdown-menu .ant-dropdown-menu-item-selected,
+.ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-submenu-title-selected,
+.ant-dropdown-menu-submenu .ant-dropdown-menu .ant-dropdown-menu-submenu-title-selected{
+  color: #8b0000;
+  background-color: #8b00001f !important;
+}
+.rotiot-card-header .ant-card-head{
+  background: #000;
+    color: #fff;
+    font-weight: 800;
+    font-size: 19px;
+}
+.ant-menu-light.ant-menu-horizontal>.ant-menu-item-selected::after,
+.ant-menu-light>.ant-menu.ant-menu-horizontal>.ant-menu-item-selected::after,
+.ant-menu-light.ant-menu-horizontal>.ant-menu-submenu-selected::after,
+.ant-menu-light>.ant-menu.ant-menu-horizontal>.ant-menu-submenu-selected::after,
+.ant-menu-light.ant-menu-horizontal>.ant-menu-item:hover::after,
+.ant-menu-light>.ant-menu.ant-menu-horizontal>.ant-menu-item:hover::after,
+.ant-menu-light.ant-menu-horizontal>.ant-menu-submenu:hover::after,
+.ant-menu-light>.ant-menu.ant-menu-horizontal>.ant-menu-submenu:hover::after,
+.ant-menu-light.ant-menu-horizontal>.ant-menu-item-active::after,
+.ant-menu-light>.ant-menu.ant-menu-horizontal>.ant-menu-item-active::after,
+.ant-menu-light.ant-menu-horizontal>.ant-menu-submenu-active::after,
+.ant-menu-light>.ant-menu.ant-menu-horizontal>.ant-menu-submenu-active::after,
+.ant-menu-light.ant-menu-horizontal>.ant-menu-item-open::after,
+.ant-menu-light>.ant-menu.ant-menu-horizontal>.ant-menu-item-open::after,
+.ant-menu-light.ant-menu-horizontal>.ant-menu-submenu-open::after,
+.ant-menu-light>.ant-menu.ant-menu-horizontal>.ant-menu-submenu-open::after{
+  border-bottom-color: #8b0000;
+}
+.chart-doughnut{
+  width: 300px !important;
+  height: 300px !important;
+}
+.chart-legends{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0px;
+}
+.chart-legends:last-child{
+  margin-bottom: 10px;
+}
+.rotiot-card-header .ant-card-body{
+  display: inline-block;
+  width: 100%;
 }

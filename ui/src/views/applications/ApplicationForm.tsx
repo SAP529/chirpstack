@@ -1,6 +1,6 @@
-import { Application } from "@chirpstack/chirpstack-api-grpc-web/api/application_pb";
-import { Form, Input, Button, Tabs, Row, Col } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Application } from "@chirpstack/chirpstack-api-grpc-web/api/application_pb";
+import { Button, Col, Form, Input, Row, Tabs } from "antd";
 
 import { onFinishFailed } from "../helpers";
 
@@ -33,9 +33,8 @@ function ApplicationForm(props: IProps) {
       layout="vertical"
       initialValues={props.initialValues.toObject()}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-    >
-      <Tabs>
+      onFinishFailed={onFinishFailed}>
+      <Tabs type="card">
         <Tabs.TabPane tab="General" key="1">
           <Form.Item label="Name" name="name" rules={[{ required: true, message: "Please enter a name!" }]}>
             <Input disabled={props.disabled} />
@@ -55,8 +54,7 @@ function ApplicationForm(props: IProps) {
                         {...restField}
                         name={[name, 0]}
                         fieldKey={[name, 0]}
-                        rules={[{ required: true, message: "Please enter a key!" }]}
-                      >
+                        rules={[{ required: true, message: "Please enter a key!" }]}>
                         <Input placeholder="Key" />
                       </Form.Item>
                     </Col>
@@ -65,8 +63,7 @@ function ApplicationForm(props: IProps) {
                         {...restField}
                         name={[name, 1]}
                         fieldKey={[name, 1]}
-                        rules={[{ required: true, message: "Please enter a value!" }]}
-                      >
+                        rules={[{ required: true, message: "Please enter a value!" }]}>
                         <Input placeholder="Value" />
                       </Form.Item>
                     </Col>

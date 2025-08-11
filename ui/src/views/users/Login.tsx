@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { Row, Col, Card } from "antd";
-import { Form, Input, Button } from "antd";
+import { Button, Card, Col, Form, Input, Row } from "antd";
 
 import type { SettingsResponse } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
-import { OpenIdConnectLoginRequest, OAuth2LoginRequest } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
+import { OAuth2LoginRequest, OpenIdConnectLoginRequest } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
 
-import SessionStore from "../../stores/SessionStore";
 import InternalStore from "../../stores/InternalStore";
+import SessionStore from "../../stores/SessionStore";
 import { useTitle } from "../helpers";
 
 const layout = {
@@ -46,7 +45,7 @@ function OidcLogin({ loginUrl, loginLabel }: OidcLoginProps) {
   return (
     <Row style={{ marginTop: "200px" }}>
       <Col span={8} offset={8}>
-        <Card title="ChirpStack login">
+        <Card title="ROTIOT login">
           <a href={loginUrl}>
             <Button type="primary">{loginLabel}</Button>
           </a>
@@ -60,7 +59,7 @@ function OAuth2Login({ loginUrl, loginLabel }: OAuth2LoginProps) {
   return (
     <Row style={{ marginTop: "200px" }}>
       <Col span={8} offset={8}>
-        <Card title="ChirpStack login">
+        <Card title="ROTIOT login">
           <a href={loginUrl}>
             <Button type="primary">{loginLabel}</Button>
           </a>
@@ -69,7 +68,13 @@ function OAuth2Login({ loginUrl, loginLabel }: OAuth2LoginProps) {
     </Row>
   );
 }
-
+function CedivaLoginHeader() {
+  return (
+    <div style={{ display: "flex", marginBottom: "15px", justifyContent: "center" }}>
+      <img src="/login-logo.png" alt="ROTIOT LoRaWAN" title="ROTIOT LoRaWAN" width="38%" />
+    </div>
+  );
+}
 function LoginForm() {
   const navigate = useNavigate();
 
@@ -82,7 +87,8 @@ function LoginForm() {
   return (
     <Row style={{ marginTop: "200px" }}>
       <Col span={8} offset={8}>
-        <Card title="ChirpStack login">
+        <Card>
+          <CedivaLoginHeader />
           <Form {...layout} onFinish={onFinish}>
             <Form.Item
               label="Username / email"
@@ -92,8 +98,7 @@ function LoginForm() {
                   required: true,
                   message: "Please enter your email / username!",
                 },
-              ]}
-            >
+              ]}>
               <Input />
             </Form.Item>
 
@@ -105,8 +110,7 @@ function LoginForm() {
                   required: true,
                   message: "Please enter your password!",
                 },
-              ]}
-            >
+              ]}>
               <Input.Password />
             </Form.Item>
 
@@ -123,6 +127,7 @@ function LoginForm() {
 }
 
 function Login() {
+  document.body.classList.add("login_bg");
   useTitle("Login");
   const location = useLocation();
   const navigate = useNavigate();

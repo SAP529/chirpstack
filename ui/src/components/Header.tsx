@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Button, Menu, Dropdown, Input, AutoComplete } from "antd";
-import { UserOutlined, DownOutlined, QuestionOutlined } from "@ant-design/icons";
+import { DownOutlined, UserOutlined } from "@ant-design/icons";
+import { AutoComplete, Button, Dropdown, Input, Menu } from "antd";
 
-import type { User } from "@chirpstack/chirpstack-api-grpc-web/api/user_pb";
-import type { SettingsResponse, GlobalSearchResponse } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
+import type { GlobalSearchResponse, SettingsResponse } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
 import { GlobalSearchRequest } from "@chirpstack/chirpstack-api-grpc-web/api/internal_pb";
+import type { User } from "@chirpstack/chirpstack-api-grpc-web/api/user_pb";
 
 import InternalStore from "../stores/InternalStore";
 import SessionStore from "../stores/SessionStore";
@@ -138,26 +138,20 @@ function Header({ user }: { user: User }) {
 
   return (
     <div>
-      <img className="logo" alt="ChirpStack" src="/logo.png" />
+      <img className="logo" alt="ROTIOT" src="/logo.png" />
       <div className="actions">
         <div className="search">
           <AutoComplete
             dropdownClassName="search-dropdown"
             dropdownMatchSelectWidth={500}
             options={options}
-            onSearch={onSearch}
-          >
+            onSearch={onSearch}>
             <Input.Search placeholder="Search..." style={{ width: 500, marginTop: -5 }} />
           </AutoComplete>
         </div>
-        <div className="help">
-          <a href="https://www.chirpstack.io" target="_blank" rel="noreferrer">
-            <Button icon={<QuestionOutlined />} />
-          </a>
-        </div>
         <div className="user">
           <Dropdown overlay={menu} placement="bottomRight" trigger={["click"]}>
-            <Button type="primary" icon={<UserOutlined />}>
+            <Button type="primary" icon={<UserOutlined />} className="rotiot-user-btn">
               {user.getEmail()} <DownOutlined />
             </Button>
           </Dropdown>
